@@ -20,7 +20,7 @@ def secdefSearch(symbol, listingExchange):
       for secType in contract["sections"]:
          if secType["secType"] == "OPT":
             months = secType["months"].split(';')
-
+            print("Month ", months)
   return underConid,months
 
 def secdefStrikes(underConid,month):
@@ -53,16 +53,22 @@ def secdefInfo(conid, month, strike):
     contractDetails = {"conid": contract["conid"], 
                        "symbol": contract["symbol"],
                        "strike": contract["strike"],
-                       "maturityDate": contract["maturityDate"]
+                       "maturityDate": contract["maturityDate"],
+                       # "desc2":  contract["desc2"]
                       }
+    print(contractDetails)
+    # print (contract)
     contracts.append(contractDetails)
   return contracts
 
 def snapshotData(underConid):
-  url = f'https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
+  url = f'https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids={underConid}'
+ # url = f'https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
+ 
   # url = f'https://localhost:5001/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
   requests.get(url=url, verify=False)
   snapshot = requests.get(url=url, verify=False)
+  print(snapshot)
   return snapshot.json()[0]["31"]
 
 def writeResult(contractDict):
@@ -76,6 +82,8 @@ def writeResult(contractDict):
       contract_writer.writerow(contractDetails)
   contract_csv_file.close()
   print("Job's done.")
+
+  
 
 if __name__ == "__main__":
   # I'm looking for the U.S. Apple Incorporated company listed on NASDAQ

@@ -6,6 +6,7 @@
 python3 --version
 Python 3.13.5
 ```
+<!-- KtF-->
 ## create venv
 <!-- ktf -->
 install venv — Creation of virtual environments [![alt text][1]](https://docs.python.org/3/library/venv.html))
