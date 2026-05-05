@@ -10,7 +10,7 @@ def secdefSearch(symbol, listingExchange):
 
   # url = f'https://localhost:5001/v1/api/iserver/secdef/search?symbol={symbol}'
 
-  url = f'https://localhost:5000/v1/api/iserver/secdef/search?symbol={symbol}'
+  url = f'https://localhost:4002/v1/api/iserver/secdef/search?symbol={symbol}'
 
   search_request = requests.get(url=url, verify=False)
   for contract in search_request.json():
@@ -29,7 +29,7 @@ def secdefStrikes(underConid,month):
   itmStrikes = []
 
   # url = f'https://localhost:5001/v1/api/iserver/secdef/strikes?conid={underConid}&secType=OPT&month={month}'
-  url = f'https://localhost:5000/v1/api/iserver/secdef/strikes?conid={underConid}&secType=OPT&month={month}'
+  url = f'https://localhost:4002/v1/api/iserver/secdef/strikes?conid={underConid}&secType=OPT&month={month}'
 
   strike_request = requests.get(url=url, verify=False)
 
@@ -43,7 +43,7 @@ def secdefStrikes(underConid,month):
 def secdefInfo(conid, month, strike):
 
   # url = f'https://localhost:5001/v1/api/iserver/secdef/info?conid={conid}&month={month}&strike={strike}&secType=OPT&right=P'
-  url = f'https://localhost:5000/v1/api/iserver/secdef/info?conid={conid}&month={month}&strike={strike}&secType=OPT&right=P'
+  url = f'https://localhost:4002/v1/api/iserver/secdef/info?conid={conid}&month={month}&strike={strike}&secType=OPT&right=P'
 
   info_request = requests.get(url=url, verify=False)
 
@@ -62,8 +62,8 @@ def secdefInfo(conid, month, strike):
   return contracts
 
 def snapshotData(underConid):
-  url = f'https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids={underConid}'
- # url = f'https://localhost:5000/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
+  url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}'
+ # url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
  
   # url = f'https://localhost:5001/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
   requests.get(url=url, verify=False)
