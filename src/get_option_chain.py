@@ -62,14 +62,15 @@ def secdefInfo(conid, month, strike):
   return contracts
 
 def snapshotData(underConid):
-  url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}'
- # url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
+  # url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}'
+  url = f'https://localhost:4002/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
  
   # url = f'https://localhost:5001/v1/api/iserver/marketdata/snapshot?conids={underConid}&fields=31'
   requests.get(url=url, verify=False)
   snapshot = requests.get(url=url, verify=False)
   print(snapshot)
-  return snapshot.json()[0]["31"]
+  # return snapshot.json()[0]["31"]
+  return snapshot.json()[0]
 
 def writeResult(contractDict):
   headers = ["conid", "symbol", "strike", "maturityDate"]
