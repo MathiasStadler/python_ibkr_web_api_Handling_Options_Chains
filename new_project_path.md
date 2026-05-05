@@ -69,6 +69,35 @@ echo $?
 
 ```
 <!-- ktf -->
+## Addinal Market Data Fields [![alt text][1]](https://www.interactivebrokers.com/campus/ibkr-api-page/cpapi-v1/#market-data-fields)
+<!-- ktf -->
+- example filed 70 and 71 , High , Low
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+baseUrl=https://localhost:4002/v1/api
+echo "$baseUrl"
+curl -k -s "$baseUrl/iserver/marketdata/snapshot?conids=865445386,8314&fields=31,84,86,7308,7309,7310,7311,7633" -G
+echo $?
+```
+<!-- ktf -->
+## Pritty print /w pathon json.tool [![alt text][1]](https://stackoverflow.com/questions/352098/how-can-i-pretty-print-json-in-a-shell-script)- Addinal Market Data Fields [![alt text][1]](https://www.interactivebrokers.com/campus/ibkr-api-page/cpapi-v1/#market-data-fields)
+<!-- ktf -->
+- example filed 70 and 71 , High , Low
+<!-- ktf -->
+7633	string	Implied Vol. %	The implied volatility for the specific strike of the option in percentage. To query the Option Implied Vol. % from the underlying refer to field 7283.
+<!-- ktf -->
+| Column 1      | Column 2      |
+| ------------- | ------------- |
+| Cell 1, Row 1 | Cell 2, Row 1 |
+| Cell 1, Row 2 | Cell 1, Row 2 |
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+baseUrl=https://localhost:4002/v1/api
+echo "$baseUrl"
+curl -k -s "$baseUrl/iserver/marketdata/snapshot?conids=865445386,8314&fields=31,84,86,7308,7309,7310,7311,7633" -G | python -m json.tool
+echo $?
+```
+<!-- ktf -->
 <!-- To comply with the format -->
 <!-- Link sign - Don't Found a better way :-( - You know a better method? - send me a email -->
 >[!NOTE]
