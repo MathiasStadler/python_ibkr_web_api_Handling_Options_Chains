@@ -27,7 +27,8 @@ curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=TREX" \
 <!-- ktf -->
 we change for Symbol TREX the  "conid":"6608603"
 we change to akt option chain date
-> [!NOTE] Add current option chain date
+> [!NOTE]
+> Add current option chain date
 <!-- ktf -->
 ```bash <!-- markdownlint-disable-line code-block-style -->
 curl -k -s "https://localhost:4002/v1/api/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY26" \
