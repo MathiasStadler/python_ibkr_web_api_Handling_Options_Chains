@@ -42,6 +42,35 @@ curl -k -s "$baseUrl/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY2
 
 ```
 <!-- ktf -->
+## Step show put
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+baseUrl=https://localhost:4002/v1/api
+echo "$baseUrl"
+curl -k -s "$baseUrl/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY26" -H "accept: application/json" -G |  jq -r '.put'
+```
+<!-- ktf -->
+## Loop over put all strike
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+for i in  $(curl -k -s "$baseUrl/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY26" -H "accept: application/json" -G |  jq  -r '.put' );do echo $i; done
+
+# without comma
+for i in  $(curl -k -s "$baseUrl/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY26" -H "accept: application/json" -G |  jq  -r  '.put'| sed "s/[,]//g" );do echo $i; done
+
+# https://stackoverflow.com/questions/32107041/how-to-check-if-a-string-only-contains-digits-numerical-characters
+
+for i in  $(curl -k -s "$baseUrl/iserver/secdef/strikes?conid=6608603&secType=OPT&month=MAY26" -H "accept: application/json" -G |  jq  -r  '.put'| sed "s/[,]//g" );do echo $i;
+if [[ $i =~ ^[0-9]+$ ]]
+then
+    echo "ok"
+else
+    echo "no"
+fi
+done
+
+```
+<!-- ktf -->
 ## Step Three: Validate The Contract [![alt text][1]](https://www.interactivebrokers.com/campus/ibkr-api-page/cpapi-v1/#oc-step-three)
 <!-- ktf -->
 ```bash <!-- markdownlint-disable-line code-block-style -->
@@ -56,6 +85,15 @@ curl -k -s "$baseUrl/iserver/secdef/info?conid=6608603&secType=OPT&month=MAY265&
 
 ```
 <!-- ktf -->
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+
+baseUrl=https://localhost:4002/v1/api
+echo "$baseUrl"
+curl -k -s "$baseUrl/iserver/secdef/info?conid=6608603&secType=OPT&month=MAY265&strike=40&right=P" -G
+```
+<!-- ktf -->
+
 ## Live Market Data Snapshot [![alt text][1]](https://www.interactivebrokers.com/campus/ibkr-api-page/cpapi-v1/#md-snapshot)
 <!-- ktf -->
 ```bash <!-- markdownlint-disable-line code-block-style -->
