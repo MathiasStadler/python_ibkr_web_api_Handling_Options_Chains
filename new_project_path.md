@@ -20,9 +20,134 @@ curl -k -s "https://localhost:4002/v1/api/iserver/auth/status" \
 ```bash <!-- markdownlint-disable-line code-block-style -->
 curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=TREX" \
 -H "accept: application/json" \
--G 
+-G   
 ```
 <!-- ktf -->
+### json working with array [![alt text][1]](https://oneuptime.com/blog/post/2026-01-24-bash-json-parsing-jq/view)
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=TREX" -H "accept: application/json" -G |jq -r '.[0]'
+-G 
+```
+<!-- end block -->
+### get vlaue from json array item
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=TREX" -H "accept: application/json" -G |jq -r '.[0].conid'
+```
+<!-- ktf -->
+### example connid as variable
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+conid=$(curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=TREX" -H "accept: application/json" -G |jq -r '.[0].conid')
+echo "connid $conid"
+```
+<!-- ktf -->
+### example with ticker symbol
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+tickersymbol="TREX"
+conid=$(curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=$tickersymbol" -H "accept: application/json" -G |jq -r '.[0].conid')
+echo "connid $conid"
+```
+<!-- end code block -->
+<!-- ktf -->
+## Step NEXT PLACEHOLDER TO FIX HERE search dates of option chain
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+symbol="CROX" && \
+curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=$symbol" \
+-H "accept: application/json" \
+-G  
+```
+<!-- ktf-->
+- extract month
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+symbol="CROX" && \
+curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=$symbol" \
+-H "accept: application/json" \
+-G  |jq -r '.[] | .sections[] | select(.secType == "OPT") | .months'
+```
+<!-- end code block -->
+<!-- ktf -->
+
+## Iter over dates
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+#!/bin/bash
+
+liste="MAY26;JUN26;SEP26;DEC26;JAN27;MAR27;JAN28"
+
+# IFS temporär auf Semikolon setzen
+IFS=';' read -r -a monate <<< "$liste"
+
+# Über das Array iterieren
+for monat in "${monate[@]}"; do
+    echo "Monat: $monat"
+done
+```
+<!-- end code block -->
+<!-- ktf -->
+## Both togerther one script
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+#!/bin/bash
+symbol="CROX"
+months_string=$(curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=$symbol" \
+  -H "accept: application/json" -G | \
+  jq -r '.[] | .sections[] | select(.secType == "OPT") | .months')
+
+if [ -z "$months_string" ]; then
+  echo "Keine OPT-Monate gefunden"
+  exit 1
+fi
+
+IFS=';' read -r -a months_array <<< "$months_string"
+
+for month in "${months_array[@]}"; do
+  echo "Months: $month"
+done
+```
+<!-- end code block -->
+<!-- ktf -->
+## with input as first parameter
+<!-- ktf -->
+```bash <!-- markdownlint-disable-line code-block-style -->
+#!/bin/bash
+
+# Prüfen, ob ein Symbol als Parameter übergeben wurde
+if [ -z "$1" ]; then
+  echo "Bitte geben Sie ein Symbol als ersten Parameter an."
+  echo "Beispiel: $0 CROX"
+  exit 1
+fi
+
+symbol="$1"
+
+# Monatsstring aus der JSON-Antwort extrahieren
+months_string=$(curl -k -s "https://localhost:4002/v1/api/iserver/secdef/search?symbol=$symbol" \
+  -H "accept: application/json" -G | \
+  jq -r '.[] | .sections[] | select(.secType == "OPT") | .months')
+
+# Prüfen, ob etwas gefunden wurde
+if [ -z "$months_string" ]; then
+  echo "Kein OPT-Abschnitt oder keine Monate gefunden für Symbol $symbol"
+  exit 1
+fi
+
+# IFS auf Semikolon setzen und in Array einlesen
+IFS=';' read -r -a months_array <<< "$months_string"
+
+# Über die Monate iterieren
+for month in "${months_array[@]}"; do
+  echo "Verarbeite Monat: $month"
+  # Hier können Sie weitere Aktionen für jeden Monat durchführen
+done
+```
+<!-- end code block -->
+<!-- ktf -->
+
 ## Step Two: Find potential Strikes [![alt text][1]](https://www.interactivebrokers.com/campus/ibkr-api-page/cpapi-v1/#oc-step-two)
 <!-- ktf -->
 we change for Symbol TREX the  "conid":"6608603"
